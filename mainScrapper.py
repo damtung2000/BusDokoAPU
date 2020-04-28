@@ -5,7 +5,7 @@ import time
 import board
 import digitalio
 import adafruit_character_lcd.character_lcd as characterlcd
-
+import regex
 # Modify this if you have a different sized character LCD
 lcd_columns = 16
 lcd_rows = 2
@@ -25,7 +25,7 @@ lcd = characterlcd.Character_LCD_Mono(
 )
 
 #Minami-APU
-# getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=1&stSid=a3526885-da77-43dc-9bc3-3cfe3a7b1999",'Minami-APU')
+getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=1&stSid=a3526885-da77-43dc-9bc3-3cfe3a7b1999",'Minami-APU')
 
 #Minami-Eki
 # getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=2&stSid=e64c5d40-62af-4efd-b242-da26ae5502dd", 'Minami-Eki')
@@ -41,7 +41,7 @@ def readData(station):
     data = pd.read_json(station + '.json',orient='columns')
     return data
 
-def getIndex():
+def getIndex(arrival):
     # print(arrival)
     indx = 0
     for i in arrival:
@@ -59,21 +59,30 @@ def getIndex():
         print(i, arrival[nextBusindx])
         return indx, nextBusindx
 
-#getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=1&stSid=a3526885-da77-43dc-9bc3-3cfe3a7b1999",'Minami-APU')
+
 data = readData('Minami-APU')
 arrival = pd.Series.tolist(data['ArrivalTime'])
 busno = pd.Series.tolist(data['BusNo'])
 state = pd.Series.tolist(data['BusState'])
-indx = getIndex()
-
+indx = getIndex(arrival)
+State = []
+for i in state:
+    if str(i) == "":
+        State.append(i)
+    elif str(i) == "On schedule":
+        State.append("On time")
+    else:
+        res = regex.findall("\d+",str(i))
+        State.append(res[0] + '\x00' + ' late')
+       
 if type(indx) is tuple:
     print(busno[indx[0]],' ', arrival[indx[0]], ' ', state[indx[0]])
     print(busno[indx[1]],' ', arrival[indx[1]], ' ', state[indx[1]])
     lcd.clear()
-    lcd.message = str(busno[indx[0]])+ ' ' +str(arrival[indx[0]]) + ' ' +str(state[indx[0]]) + '\n' + str(busno[indx[1]]) + ' ' +str(arrival[indx[1]]) + ' ' + str(state[indx[1]])
+    lcd.message = str(busno[indx[0]])+ ' ' + str(arrival[indx[0]]) + ' ' + str(State[indx[0]]) + '\n' + str(busno[indx[1]]) + ' ' +str(arrival[indx[1]]) + ' ' + str(State[indx[1]])
 else:
     print(busno[indx],' ', arrival[indx], ' ', state[indx])
     lcd.clear()
-#    lcd.message= busno[indx],' ', arrival[indx], ' ', state[indx])
+    lcd.message = str(busno[indx]) + ' ' + str(arrival[indx]) + ' ' + str(State[indx])
 
     
