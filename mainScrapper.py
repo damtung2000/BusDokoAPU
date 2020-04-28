@@ -25,7 +25,7 @@ lcd = characterlcd.Character_LCD_Mono(
 )
 
 #Minami-APU
-getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=1&stSid=a3526885-da77-43dc-9bc3-3cfe3a7b1999",'Minami-APU')
+# getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=1&stSid=a3526885-da77-43dc-9bc3-3cfe3a7b1999",'Minami-APU')
 
 #Minami-Eki
 # getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=2&stSid=e64c5d40-62af-4efd-b242-da26ae5502dd", 'Minami-Eki')
