@@ -1,5 +1,5 @@
 import time
-# start = time.time()
+start = time.time()
 #from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -51,5 +51,6 @@ def getSchedule(url,name):
     # write to json
     df.to_json('%s.json' % name)
     print(df)
+    print(time.time()-start)
 #getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=1&stSid=a3526885-da77-43dc-9bc3-3cfe3a7b1999",'Minami')
 
