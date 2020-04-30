@@ -39,7 +39,7 @@ def getSchedule(url,name):
         for i in arrivalTime:
             arrivaltime.append(i.text)
         for i in busNo:
-            busno.append(i.text)
+            busno.append(i.text[0:2])
         for i in busState:
             busstate.append(i.text)
         busCondition = {'BusNo':busno,'ArrivalTime':arrivaltime,'BusState':busstate}
@@ -60,5 +60,5 @@ def getSchedule(url,name):
    # soup = BeautifulSoup(driver.page_source,'html.parser')
    
         
-getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=1&stSid=a3526885-da77-43dc-9bc3-3cfe3a7b1999",'Minami')
+# getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=1&stSid=a3526885-da77-43dc-9bc3-3cfe3a7b1999",'Minami')
 
