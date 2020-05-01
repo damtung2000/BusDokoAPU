@@ -37,16 +37,20 @@ bun = (0b00000,
 )
 lcd.create_char(0,bun)
 # Minami-APU
-# getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=1&stSid=a3526885-da77-43dc-9bc3-3cfe3a7b1999",'Minami-APU')
+lcd.message = "Loading\nMinami-APU"
+getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=1&stSid=a3526885-da77-43dc-9bc3-3cfe3a7b1999",'Minami-APU')
 
 # Minami-Eki
-# getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=2&stSid=e64c5d40-62af-4efd-b242-da26ae5502dd", 'Minami-Eki')
+lcd.message = "Loading\nMinami-Eki"
+getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=2&stSid=e64c5d40-62af-4efd-b242-da26ae5502dd", 'Minami-Eki')
 
 # Daisan-APU
-# getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=1&stSid=924e8147-7112-437e-9fe8-a6a3bb8e07fd", 'Daisan-APU')
+lcd.message = "Loading\nDaisan-APU"
+getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=1&stSid=924e8147-7112-437e-9fe8-a6a3bb8e07fd", 'Daisan-APU')
 
 # Daisan-Eki
-# getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=1&stSid=924e8147-7112-437e-9fe8-a6a3bb8e07fd", 'Daisan-Eki')
+lcd.message = "Loading\nDaisan-APU"
+getSchedule("https://www.busdoko-oita.jp/map/SpecialRoute/Route?spId=1&drId=1&stSid=924e8147-7112-437e-9fe8-a6a3bb8e07fd", 'Daisan-Eki')
 
 def readData(station):
     data = pd.read_json(station + '.json',orient='columns')
@@ -80,7 +84,7 @@ def minamiEkibutton():
     for i in state:
         if str(i) == "":
             State.append(i)
-        elif str(i) == "On schedule":
+        elif str(i).strip() == "通常運行":
             State.append("On time")
         else:
             res = regex.findall("(\d+)",str(i))
@@ -98,7 +102,7 @@ def minamiEkibutton():
 def clearButton():
     lcd.clear()
 
-minamiButton = io.Button(21,pull_up=False, hold_time=2)
+minamiButton = io.Button(21,pull_up=False, hold_time=0.5)
 minamiButton.when_pressed = minamiEkibutton
 minamiButton.when_held = clearButton
 pause()
